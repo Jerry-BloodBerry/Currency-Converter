@@ -8,7 +8,7 @@ from kivy.uix.gridlayout import GridLayout
 
 from kivy.config import Config
 from kivy.core.window import Window
-from UILogic import Convert, DropDownCurrencyButton
+from UILogic import DropDownCurrencyButton, GetConvertedValue
 Config.set('graphics', 'width', 900)
 Config.set('graphics', 'height', 500)
 Window.clearcolor = (0, 0.4, 0.6, 1)
@@ -25,6 +25,9 @@ class Header(GridLayout):
 class ConverterPanel(GridLayout):
     def __init__(self, **kwargs):
         super(ConverterPanel, self).__init__(**kwargs)
+        self.convertedValue = 1
+        self.currencyFrom = 'EUR'
+        self.currencyTo = 'EUR'
         self.border = (10,10,10,10)
         self.cols = 5
         self.padding = [60, 30]
@@ -33,17 +36,24 @@ class ConverterPanel(GridLayout):
         self.add_widget(Label())
         self.add_widget(Label(text='To'))
         self.add_widget(Label(text=''))
-        self.amountInput = TextInput(multiline=False, focus=True, allow_copy=True)
+        self.amountInput = TextInput(multiline=False, allow_copy=True)
         self.add_widget(self.amountInput)
-        currencyFromButton = DropDownCurrencyButton()
-        currencyToButton = DropDownCurrencyButton()
-        self.add_widget(currencyFromButton)
+        self.currencyFromButton = DropDownCurrencyButton()
+        self.currencyToButton = DropDownCurrencyButton()
+        self.add_widget(self.currencyFromButton)
         switchButton = Button(background_normal='switch_icon.png')
         self.add_widget(switchButton)
-        self.add_widget(currencyToButton)
+        self.add_widget(self.currencyToButton)
         self.convertButton = Button(text='Convert')
-        self.convertButton.bind(on_press=Convert)
         self.add_widget(self.convertButton)
+        self.convertButton.bind(on_press=self.Convert)
+
+    def Convert(self, instance):
+        self.currencyFrom = self.currencyFromButton.text[0:3]
+        self.currencyTo = self.currencyToButton.text[0:3]
+        amount = float(self.amountInput.text)
+        self.convertedValue = GetConvertedValue(self.currencyFrom, self.currencyTo, amount)
+        print(self.convertedValue)
 
 
 class ResultPanel(AnchorLayout):
@@ -57,7 +67,8 @@ class MainWindow(GridLayout):
         self.cols = 1
         self.padding = [10, 10]
         self.add_widget(Header())
-        self.add_widget(ConverterPanel())
+        self.converterPanel = ConverterPanel()
+        self.add_widget(self.converterPanel)
         self.add_widget(ResultPanel())
 
 

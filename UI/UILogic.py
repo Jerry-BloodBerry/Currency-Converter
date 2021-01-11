@@ -17,19 +17,12 @@ exampleApiResponse = {
     "base": "EUR",
     "date": "2021-01-11",
     "rates": {
-        "AUD": 1.566015,
-        "CAD": 1.560132,
-        "CHF": 1.154727,
-        "CNY": 7.827874,
-        "GBP": 0.882047,
-        "JPY": 132.360679,
-        "USD": 1.23396
+        "AED": 1.566015,
+        "AFN": 1.560132,
+        "ALL": 1.154727,
+        "AMD": 7.827874
     }
 }
-
-
-def Convert(instance):
-    return 1.56
 
 
 def DropDownCurrencyButton(currencyDict=exampleCurrencies):
@@ -45,3 +38,6 @@ def DropDownCurrencyButton(currencyDict=exampleCurrencies):
     dropdown.bind(on_select=lambda instance, x: setattr(mainButton, 'text', x))
     return mainButton
 
+
+def GetConvertedValue(currencyFrom, currencyTo, amount, currencyDict=exampleCurrencies, ApiResponse=exampleApiResponse):
+    return amount*ApiResponse['rates'][currencyTo]
