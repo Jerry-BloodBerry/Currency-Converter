@@ -9,7 +9,8 @@ exampleCurrencies = {
         "AFN": "Afghan Afghani",
         "ALL": "Albanian Lek",
         "EUR": "Euro",
-        "AMD": "Armenian Dram"
+        "AMD": "Armenian Dram",
+        "USD": "US Dollar"
 }
 exampleApiResponse = {
     "success": True,
@@ -20,19 +21,20 @@ exampleApiResponse = {
         "AED": 1.566015,
         "AFN": 1.560132,
         "ALL": 1.154727,
-        "AMD": 7.827874
+        "AMD": 7.827874,
+        "USD": 4.323345
     }
 }
 
 
-def DropDownCurrencyButton(currencyDict=exampleCurrencies):
+def DropDownCurrencyButton(defaultCurrency, currencyDict=exampleCurrencies):
     dropdown = DropDown()
     for currencySymbol in currencyDict.keys():
         btnText = f"{currencySymbol}: {currencyDict[currencySymbol]}"
         btn = Button(text=btnText, size_hint_y=None, height=35)
         btn.bind(on_release=lambda btn: dropdown.select(btn.text))
         dropdown.add_widget(btn)
-    btnText = f"EUR: {currencyDict['EUR']}"
+    btnText = f"{defaultCurrency}: {currencyDict[defaultCurrency]}"
     mainButton = Button(text=btnText, size_hint=(None, None))
     mainButton.bind(on_release=dropdown.open)
     dropdown.bind(on_select=lambda instance, x: setattr(mainButton, 'text', x))
@@ -41,3 +43,21 @@ def DropDownCurrencyButton(currencyDict=exampleCurrencies):
 
 def GetConvertedValue(currencyFrom, currencyTo, amount, currencyDict=exampleCurrencies, ApiResponse=exampleApiResponse):
     return amount*ApiResponse['rates'][currencyTo]
+
+
+def GetUpdateDate(ApiResponse=exampleApiResponse):
+    return f"Last update: {ApiResponse['date']}"
+
+
+def Get1EuroInDollars():
+    value = GetConvertedValue('EUR', 'USD', 1)
+    return f"1 EUR = {value} USD"
+
+
+def Get1DollarInEuros():
+    value = GetConvertedValue('EUR', 'USD', 1)
+    return f"1 USD = {value} EUR"
+
+
+def GetConvertedValueString(currencyFrom, currencyTo, amount):
+    return f"{amount} {currencyFrom} = {GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
