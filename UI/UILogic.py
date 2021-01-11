@@ -24,9 +24,11 @@ class UILogic:
         return mainButton
 
     def GetConvertedValue(self, currencyFrom, currencyTo, amount):
-        return amount*self.ApiResponse['rates'][currencyTo]
+        # TODO - should work with every currency (that function works only if currencyFrom is EUR)
+        return amount * self.ApiResponse['rates'][currencyTo]
 
     def GetUpdateDate(self):
+        # TODO - get date and time
         return f"Last update: {self.ApiResponse['date']}"
 
     def Get1EuroInDollars(self):
