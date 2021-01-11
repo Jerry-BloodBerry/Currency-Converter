@@ -3,6 +3,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.gridlayout import GridLayout
@@ -18,17 +19,29 @@ Window.clearcolor = (0, 0.4, 0.6, 1)
 class Header(GridLayout):
     def __init__(self, **kwargs):
         super(Header, self).__init__(**kwargs)
-        self.cols = 1
-        self.padding = [0, 10]
-        self.add_widget(Label(text='Accurate Currency Converter'))
+        self.cols = 2
+        self.padding = [0, 10, 0, 0]
+        self.add_widget(Label(
+            text='Quite Accurate Currency Converter',
+            size_hint=(.5, 1),
+            font_name='Roboto-Bold',
+            font_size=23
+        ))
+        self.add_widget(Label(text='', size_hint=(.5, 1)))
 
 
 class MainPanel(GridLayout):
     def __init__(self, uiLogic, converter, **kwargs):
         super(MainPanel, self).__init__(**kwargs)
+        self.cols = 1
         self.converter = converter
         self.uiLogic = uiLogic
-        self.converterPanel = GridLayout(cols=5)
+        self.converterPanel = GridLayout(cols=5, size_hint=(.3, 1))
+        # with self.converterPanel.canvas:
+        #     Color = (1., 0., 0.),
+        #     Rectangle = ()
+        #     pos: 0, separator.center_y
+        #     size: separator.width, 2
         self.add_widget(self.converterPanel)
         self.currencyFrom = 'EUR'
         self.currencyTo = 'USD'
@@ -41,7 +54,7 @@ class MainPanel(GridLayout):
         self.convertButton.bind(on_press=self.Convert)
         self.InitiateConverterPanel()
 
-        self.resultPanel = GridLayout(cols=1)
+        self.resultPanel = GridLayout(cols=1, size_hint=(.7, 1))
         self.add_widget(self.resultPanel)
         self.mainLabel = Label(text=self.converter.Get1EuroInDollars())
         self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros())
@@ -86,10 +99,11 @@ class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = (40, 30)
-        self.add_widget(Header())
+        self.padding = [50, 30]
+        self.spacing = 10
+        self.add_widget(Header(size_hint=(1, .1)))
         uiLogic = UILogic(currencyDict)
-        self.mainPanel = MainPanel(uiLogic, converter, cols=1)
+        self.mainPanel = MainPanel(uiLogic, converter, size_hint=(1, .9))
         self.add_widget(self.mainPanel)
 
 
