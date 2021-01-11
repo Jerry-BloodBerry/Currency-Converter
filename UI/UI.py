@@ -8,6 +8,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.gridlayout import GridLayout
 from kivy.config import Config
 from kivy.core.window import Window
+from UI.UILogic import UILogic
 Config.set('graphics', 'width', 900)
 Config.set('graphics', 'height', 500)
 Window.clearcolor = (0, 0.4, 0.6, 1)
@@ -22,8 +23,9 @@ class Header(GridLayout):
 
 
 class MainPanel(GridLayout):
-    def __init__(self, uiLogic, **kwargs):
+    def __init__(self, uiLogic, converter, **kwargs):
         super(MainPanel, self).__init__(**kwargs)
+        self.converter = converter
         self.uiLogic = uiLogic
         self.converterPanel = GridLayout(cols=5)
         self.add_widget(self.converterPanel)
@@ -49,14 +51,14 @@ class MainPanel(GridLayout):
         self.convertButton.bind(on_press=self.Convert)
         self.resultPanel = GridLayout(cols=1)
         self.add_widget(self.resultPanel)
-        self.mainLabel = Label(text=self.uiLogic.Get1EuroInDollars())
+        self.mainLabel = Label(text=self.converter.Get1EuroInDollars())
         self.resultPanel.add_widget(self.mainLabel)
-        self.labelUnit1 = Label(text=self.uiLogic.Get1DollarInEuros())
+        self.labelUnit1 = Label(text=self.converter.Get1DollarInEuros())
         self.resultPanel.add_widget(self.labelUnit1)
         self.innerGridLayout = GridLayout(cols=2)
         self.resultPanel.add_widget(self.innerGridLayout)
-        self.labelUnit2 = Label(text=self.uiLogic.Get1EuroInDollars())
-        self.dateOfUpdateLabel = Label(text=self.uiLogic.GetUpdateDate())
+        self.labelUnit2 = Label(text=self.converter.Get1EuroInDollars())
+        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate())
         self.innerGridLayout.add_widget(self.labelUnit2)
         self.innerGridLayout.add_widget(self.dateOfUpdateLabel)
 
@@ -64,21 +66,22 @@ class MainPanel(GridLayout):
         self.currencyFrom = self.currencyFromButton.text[0:3]
         self.currencyTo = self.currencyToButton.text[0:3]
         amount = float(self.amountInput.text)
-        self.mainLabel.text = self.uiLogic.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
-        #self.labelUnit1.text = GetConvertedValueString(self.currencyTo, self.currencyFrom, 1)
-        self.labelUnit2.text = self.uiLogic.GetConvertedValueString(self.currencyFrom, self.currencyTo, 1)
-        self.dateOfUpdateLabel.text = self.uiLogic.GetUpdateDate()
+        self.mainLabel.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
+        #self.labelUnit1.text = self.converter.GetConvertedValueString(self.currencyTo, self.currencyFrom, 1)
+        self.labelUnit2.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, 1)
+        self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
 
     def Switch(self, instance):
         pass
 
 
 class MainWindow(BoxLayout):
-    def __init__(self, uiLogic, **kwargs):
+    def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.orientation = 'vertical'
         self.add_widget(Header())
-        self.mainPanel = MainPanel(uiLogic, cols=1)
+        uiLogic = UILogic(currencyDict)
+        self.mainPanel = MainPanel(uiLogic, converter, cols=1)
         self.add_widget(self.mainPanel)
 
 

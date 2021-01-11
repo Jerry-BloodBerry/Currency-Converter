@@ -1,5 +1,5 @@
 from kivy.app import App
-from UI.UILogic import UILogic
+from Logic.Converter import Converter
 from UI.UI import MainWindow
 
 exampleCurrencies = {
@@ -27,8 +27,8 @@ exampleApiResponse = {
 
 class Program(App):
     def build(self):
-        uiLogic = UILogic(exampleCurrencies, exampleApiResponse)
-        return MainWindow(uiLogic)
+        converter = Converter(exampleCurrencies, exampleApiResponse)
+        return MainWindow(exampleCurrencies, converter)
 
 
 Program().run()
