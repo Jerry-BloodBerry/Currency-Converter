@@ -43,8 +43,6 @@ class MainPanel(GridLayout):
         #     pos: 0, separator.center_y
         #     size: separator.width, 2
         self.add_widget(self.converterPanel)
-        self.currencyFrom = 'EUR'
-        self.currencyTo = 'USD'
         self.amountInput = TextInput(multiline=False, allow_copy=True)
         self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
         self.currencyToButton = self.uiLogic.DropDownCurrencyButton('USD')
@@ -56,30 +54,30 @@ class MainPanel(GridLayout):
 
         self.resultPanel = GridLayout(cols=1, size_hint=(.7, 1))
         self.add_widget(self.resultPanel)
-        self.mainLabel = Label(text=self.converter.Get1EuroInDollars())
-        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros())
+        self.mainLabel = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold')
+        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold')
         self.innerGridLayout = GridLayout(cols=2)
-        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars())
-        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate())
+        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold')
+        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold')
         self.InitiateResultPanel()
 
     def Convert(self, instance):
-        self.currencyFrom = self.currencyFromButton.text[0:3]
-        self.currencyTo = self.currencyToButton.text[0:3]
+        currencyFrom = self.currencyFromButton.text[0:3]
+        currencyTo = self.currencyToButton.text[0:3]
         amount = float(self.amountInput.text)
-        self.mainLabel.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
-        #self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(self.currencyTo, self.currencyFrom, 1)
-        self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, 1)
+        self.mainLabel.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, amount)
+        #self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
+        self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
 
     def Switch(self, instance):
         pass
 
     def InitiateConverterPanel(self):
-        self.converterPanel.add_widget(Label(text='Amount'))
-        self.converterPanel.add_widget(Label(text='From'))
+        self.converterPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18))
+        self.converterPanel.add_widget(Label(text='From', font_name='Roboto-Bold', font_size=18))
         self.converterPanel.add_widget(Label())
-        self.converterPanel.add_widget(Label(text='To'))
+        self.converterPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18))
         self.converterPanel.add_widget(Label(text=''))
         self.converterPanel.add_widget(self.amountInput)
         self.converterPanel.add_widget(self.currencyFromButton)
