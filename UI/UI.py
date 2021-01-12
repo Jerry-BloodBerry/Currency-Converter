@@ -9,6 +9,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.config import Config
 from kivy.core.window import Window
 from UI.UILogic import UILogic
+import re
+from ErrorHandling.errors import UIError
 Config.set('graphics', 'width', 900)
 Config.set('graphics', 'height', 500)
 Window.clearcolor = (0, 0.4, 0.6, 1)
@@ -65,8 +67,15 @@ class MainPanel(GridLayout):
     def Convert(self, instance):
         self.currencyFrom = self.currencyFromButton.text[0:3]
         self.currencyTo = self.currencyToButton.text[0:3]
-        amount = float(self.amountInput.text)
-        self.mainLabel.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
+        match  = re.match(r'^[1-9][0-9]*|[0]*[1-9]+[0-9]*$',self.amountInput.text) #ROBOCZY REGEX DLA MARTY
+        if match is None:
+            self.mainLabel.text = "ZLY INPUT"
+            self.amountInput.text=""
+        else:
+            amount = float(self.amountInput.text) 
+            self.mainLabel.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
+            
+        #self.mainLabel.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, amount)
         #self.labelUnit1.text = self.converter.GetConvertedValueString(self.currencyTo, self.currencyFrom, 1)
         self.labelUnit2.text = self.converter.GetConvertedValueString(self.currencyFrom, self.currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
