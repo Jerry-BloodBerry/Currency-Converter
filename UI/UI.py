@@ -36,7 +36,7 @@ class MainPanel(GridLayout):
         self.cols = 1
         self.converter = converter
         self.uiLogic = uiLogic
-        self.converterPanel = GridLayout(cols=5, size_hint=(.3, 1))
+        self.converterPanel = GridLayout(cols=5, size_hint=(.25, 1))
         # with self.converterPanel.canvas:
         #     Color = (1., 0., 0.),
         #     Rectangle = ()
@@ -46,19 +46,21 @@ class MainPanel(GridLayout):
         self.amountInput = TextInput(multiline=False, allow_copy=True)
         self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
         self.currencyToButton = self.uiLogic.DropDownCurrencyButton('USD')
-        self.switchButton = Button(background_normal='switch_icon.png')
+        self.switchButton = Button(background_normal='Resources/switch_icon.png')
         self.switchButton.bind(on_press=self.Switch)
         self.convertButton = Button(text='Convert')
         self.convertButton.bind(on_press=self.Convert)
         self.InitiateConverterPanel()
 
-        self.resultPanel = GridLayout(cols=1, size_hint=(.7, 1))
+        self.resultPanel = GridLayout(cols=1, size_hint=(.75, 1))
         self.add_widget(self.resultPanel)
-        self.mainLabel = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold')
-        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold')
-        self.innerGridLayout = GridLayout(cols=2)
-        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold')
-        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold')
+        self.mainLabel = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=27)
+        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold', font_size=20)
+        self.innerGridLayout = GridLayout(cols=3)
+        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=20,
+                                        size_hint=(.4, 1))
+        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold', font_size=14,
+                                       size_hint=(.3, 1))
         self.InitiateResultPanel()
 
     def Convert(self, instance):
@@ -74,7 +76,12 @@ class MainPanel(GridLayout):
         pass
 
     def InitiateConverterPanel(self):
+        #amountPanel = BoxLayout(orientation="vertical")
+        #self.converterPanel.add_widget(amountPanel)
+        #amountPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18, size_hint=(1, .15)))
         self.converterPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18))
+        #amountPanel.add_widget(self.amountInput)
+
         self.converterPanel.add_widget(Label(text='From', font_name='Roboto-Bold', font_size=18))
         self.converterPanel.add_widget(Label())
         self.converterPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18))
@@ -89,6 +96,7 @@ class MainPanel(GridLayout):
         self.resultPanel.add_widget(self.mainLabel)
         self.resultPanel.add_widget(self.exchangeRateLabel1)
         self.resultPanel.add_widget(self.innerGridLayout)
+        self.innerGridLayout.add_widget(Label(text='', size_hint=(.3, 1)))
         self.innerGridLayout.add_widget(self.exchangeRateLabel2)
         self.innerGridLayout.add_widget(self.dateOfUpdateLabel)
 
@@ -97,8 +105,8 @@ class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = [50, 30]
-        self.spacing = 10
+        self.padding = [50, 30, 50, 35]
+        self.spacing = 30
         self.add_widget(Header(size_hint=(1, .1)))
         uiLogic = UILogic(currencyDict)
         self.mainPanel = MainPanel(uiLogic, converter, size_hint=(1, .9))
