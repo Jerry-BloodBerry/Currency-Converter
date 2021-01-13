@@ -10,7 +10,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 from UI.UILogic import UILogic
 Window.clearcolor = (0, 0.4, 0.6, 1)
-Window.size = (1100, 600)
+Window.size = (1000, 600)
 #Window.clearcolor = (1, 1, 1, 1)
 
 
@@ -25,7 +25,7 @@ class Header(GridLayout):
             font_name='Roboto-Bold',
             font_size=23
         ))
-        self.add_widget(Label(text='', size_hint=(.5, 1)))
+        self.add_widget(Label(size_hint=(.5, 1)))
 
 
 class MainPanel(BoxLayout):
@@ -40,6 +40,7 @@ class MainPanel(BoxLayout):
         self.amountInput = TextInput(multiline=False, allow_copy=True)
         self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
         self.currencyToButton = self.uiLogic.DropDownCurrencyButton('USD')
+        print(self.currencyToButton)
         self.switchButton = Button(background_normal='Resources/switch_icon.png')
         self.switchButton.bind(on_press=self.Switch)
         self.convertButton = Button(background_normal='Resources/convert_icon.png')
@@ -67,10 +68,13 @@ class MainPanel(BoxLayout):
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
 
     def Switch(self, instance):
-        pass
+        tmp = self.currencyToButton.text
+        print(type(tmp))
+        self.currencyToButton.text = self.currencyFromButton.text
+        self.currencyFromButton.text = tmp
 
     def InitiateConverterPanel(self):
-        self.converterPanel.spacing = 10
+        self.converterPanel.spacing = 5
         amountPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.3, 1))
         self.converterPanel.add_widget(amountPanel)
         amountPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
@@ -109,7 +113,7 @@ class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = [50, 30, 50, 35]
+        self.padding = [50, 30, 30, 35]
         self.spacing = 30
         self.add_widget(Header(size_hint=(1, .05)))
         uiLogic = UILogic(currencyDict)
