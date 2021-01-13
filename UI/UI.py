@@ -63,7 +63,7 @@ class MainPanel(BoxLayout):
         currencyFrom = self.currencyFromButton.text[0:3]
         currencyTo = self.currencyToButton.text[0:3]
         self.amountInput.text = (self.amountInput.text).replace(",",".")
-        match = re.match(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',self.amountInput.text)
+        match = re.fullmatch(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',self.amountInput.text)
         if match is None:
             self.mainLabel.text = "ZLY INPUT"
             self.amountInput.text=""
