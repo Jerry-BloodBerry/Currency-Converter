@@ -25,10 +25,10 @@ exampleApiResponse = {
 }
 
 
-class Program(App):
+class ConverterApp(App):
     def build(self):
         converter = Converter(exampleCurrencies, exampleApiResponse)
         return MainWindow(exampleCurrencies, converter)
 
 
-Program().run()
+ConverterApp().run()
