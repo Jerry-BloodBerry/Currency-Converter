@@ -7,12 +7,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.gridlayout import GridLayout
-from kivy.config import Config
 from kivy.core.window import Window
 from UI.UILogic import UILogic
-Config.set('graphics', 'width', 900)
-Config.set('graphics', 'height', 500)
 Window.clearcolor = (0, 0.4, 0.6, 1)
+Window.size = (1100, 600)
 #Window.clearcolor = (1, 1, 1, 1)
 
 
@@ -30,18 +28,14 @@ class Header(GridLayout):
         self.add_widget(Label(text='', size_hint=(.5, 1)))
 
 
-class MainPanel(GridLayout):
+class MainPanel(BoxLayout):
     def __init__(self, uiLogic, converter, **kwargs):
         super(MainPanel, self).__init__(**kwargs)
-        self.cols = 1
         self.converter = converter
         self.uiLogic = uiLogic
-        self.converterPanel = GridLayout(cols=5, size_hint=(.25, 1))
-        # with self.converterPanel.canvas:
-        #     Color = (1., 0., 0.),
-        #     Rectangle = ()
-        #     pos: 0, separator.center_y
-        #     size: separator.width, 2
+        self.spacing = 30
+        self.padding = [0, 10, 0, 0]
+        self.converterPanel = GridLayout(cols=5, size_hint=(1, .2))
         self.add_widget(self.converterPanel)
         self.amountInput = TextInput(multiline=False, allow_copy=True)
         self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
@@ -52,7 +46,7 @@ class MainPanel(GridLayout):
         self.convertButton.bind(on_press=self.Convert)
         self.InitiateConverterPanel()
 
-        self.resultPanel = GridLayout(cols=1, size_hint=(.75, 1))
+        self.resultPanel = GridLayout(cols=1, size_hint=(1, .8))
         self.add_widget(self.resultPanel)
         self.mainLabel = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=27)
         self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold', font_size=20)
@@ -76,21 +70,31 @@ class MainPanel(GridLayout):
         pass
 
     def InitiateConverterPanel(self):
-        #amountPanel = BoxLayout(orientation="vertical")
-        #self.converterPanel.add_widget(amountPanel)
-        #amountPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18, size_hint=(1, .15)))
-        self.converterPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18))
-        #amountPanel.add_widget(self.amountInput)
+        self.converterPanel.spacing = 10
+        amountPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.3, 1))
+        self.converterPanel.add_widget(amountPanel)
+        amountPanel.add_widget(Label(text='Amount', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
+        amountPanel.add_widget(self.amountInput)
 
-        self.converterPanel.add_widget(Label(text='From', font_name='Roboto-Bold', font_size=18))
-        self.converterPanel.add_widget(Label())
-        self.converterPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18))
-        self.converterPanel.add_widget(Label(text=''))
-        self.converterPanel.add_widget(self.amountInput)
-        self.converterPanel.add_widget(self.currencyFromButton)
-        self.converterPanel.add_widget(self.switchButton)
-        self.converterPanel.add_widget(self.currencyToButton)
-        self.converterPanel.add_widget(self.convertButton)
+        currencyFromPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.3, 1))
+        self.converterPanel.add_widget(currencyFromPanel)
+        currencyFromPanel.add_widget(Label(text='From', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
+        currencyFromPanel.add_widget(self.currencyFromButton)
+
+        switchPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.1, 1))
+        self.converterPanel.add_widget(switchPanel)
+        switchPanel.add_widget(Label(size_hint=(1, .1)))
+        switchPanel.add_widget(self.switchButton)
+
+        currencyToPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.3, 1))
+        self.converterPanel.add_widget(currencyToPanel)
+        currencyToPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
+        currencyToPanel.add_widget(self.currencyToButton)
+
+        converterButtonPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.1, 1))
+        self.converterPanel.add_widget(converterButtonPanel)
+        converterButtonPanel.add_widget(Label(size_hint=(1, .25)))
+        converterButtonPanel.add_widget(self.convertButton)
 
     def InitiateResultPanel(self):
         self.resultPanel.add_widget(self.mainLabel)
@@ -107,9 +111,9 @@ class MainWindow(BoxLayout):
         self.orientation = 'vertical'
         self.padding = [50, 30, 50, 35]
         self.spacing = 30
-        self.add_widget(Header(size_hint=(1, .1)))
+        self.add_widget(Header(size_hint=(1, .05)))
         uiLogic = UILogic(currencyDict)
-        self.mainPanel = MainPanel(uiLogic, converter, size_hint=(1, .9))
+        self.mainPanel = MainPanel(uiLogic, converter, orientation='vertical', size_hint=(1, .95))
         self.add_widget(self.mainPanel)
 
 
