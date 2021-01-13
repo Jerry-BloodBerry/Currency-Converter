@@ -45,13 +45,14 @@ class MainPanel(BoxLayout):
 
         self.resultPanel = BoxLayout(orientation='vertical', spacing=10, size_hint=(1, .8))
         self.add_widget(self.resultPanel)
-        self.mainLabelPanel = BoxLayout(orientation='vertical')
+        self.mainLabelPanel = BoxLayout(orientation='vertical', size_hint=(1, .4))
         mainLabelText = f"{self.converter.GetConvertedValue('EUR', 'USD', 1)} USD"
-        self.mainLabelUnit = Label(text='1 EUR =', font_name='Roboto-Bold', font_size=28)
-        self.mainLabel = Label(text=mainLabelText, font_name='Roboto-Bold', font_size=44)
-        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold', font_size=20)
-        self.innerBoxLayout = BoxLayout(orientation='horizontal')
-        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=20,
+        self.mainLabelUnit = Label(text='1 EUR =', font_name='Roboto-Bold', font_size=32)
+        self.mainLabel = Label(text=mainLabelText, font_name='Roboto-Bold', font_size=48)
+        self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold', font_size=26,
+                                        size_hint=(1, .3))
+        self.innerBoxLayout = BoxLayout(orientation='horizontal', size_hint=(1, .4))
+        self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=26,
                                         size_hint=(.4, 1))
         self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold', font_size=14,
                                        size_hint=(.3, 1))
@@ -117,7 +118,7 @@ class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
         self.orientation = 'vertical'
-        self.padding = [50, 30, 30, 35]
+        self.padding = [50, 30, 30, 50]
         self.spacing = 30
         self.add_widget(Header(size_hint=(1, .05)))
         uiLogic = UILogic(currencyDict)
