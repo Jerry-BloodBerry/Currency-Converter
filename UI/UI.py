@@ -87,9 +87,9 @@ class MainPanel(BoxLayout):
         currencyFromPanel.add_widget(Label(text='From', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
         currencyFromPanel.add_widget(self.currencyFromButton)
 
-        switchPanel = BoxLayout(orientation="vertical", size_hint=(.1, 1))
+        switchPanel = BoxLayout(orientation="vertical", size_hint=(.1, 1), padding=[10, 0])
         self.converterPanel.add_widget(switchPanel)
-        switchPanel.add_widget(Label(size_hint=(1, .1)))
+        switchPanel.add_widget(Label(size_hint=(1, .5)))
         switchPanel.add_widget(self.switchButton)
 
         currencyToPanel = BoxLayout(orientation="vertical", spacing=10, size_hint=(.3, 1))
@@ -97,9 +97,9 @@ class MainPanel(BoxLayout):
         currencyToPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
         currencyToPanel.add_widget(self.currencyToButton)
 
-        converterButtonPanel = BoxLayout(orientation="vertical", size_hint=(.1, 1))
+        converterButtonPanel = BoxLayout(orientation="vertical", size_hint=(.1, 1), padding=[10,0])
         self.converterPanel.add_widget(converterButtonPanel)
-        converterButtonPanel.add_widget(Label(size_hint=(1, .1)))
+        converterButtonPanel.add_widget(Label(size_hint=(1, .5)))
         converterButtonPanel.add_widget(self.convertButton)
 
     def InitiateResultPanel(self):
