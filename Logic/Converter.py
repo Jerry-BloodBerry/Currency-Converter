@@ -5,7 +5,8 @@ class Converter:
 
     def GetConvertedValue(self, currencyFrom, currencyTo, amount):
         # TODO - should work with every currency (that function works only if currencyFrom is EUR)
-        return amount * self.ApiResponse['rates'][currencyTo]
+        value = amount * self.ApiResponse['rates'][currencyTo]
+        return "{:.5f}".format(value)
 
     def GetUpdateDate(self):
         # TODO - get date and time

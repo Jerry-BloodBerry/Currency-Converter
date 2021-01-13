@@ -1,12 +1,9 @@
 from kivy.app import App
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 from UI.UILogic import UILogic
 Window.clearcolor = (0, 0.4, 0.6, 1)
@@ -14,18 +11,18 @@ Window.size = (1000, 600)
 #Window.clearcolor = (1, 1, 1, 1)
 
 
-class Header(GridLayout):
+class Header(BoxLayout):
     def __init__(self, **kwargs):
         super(Header, self).__init__(**kwargs)
-        self.cols = 2
+        self.orientation = 'horizontal'
         self.padding = [0, 10, 0, 0]
         self.add_widget(Label(
             text='Quite Accurate Currency Converter',
-            size_hint=(.5, 1),
             font_name='Roboto-Bold',
-            font_size=23
+            font_size=26,
+            halign='left'
         ))
-        self.add_widget(Label(size_hint=(.5, 1)))
+        self.add_widget(Label())
 
 
 class MainPanel(BoxLayout):
@@ -35,12 +32,11 @@ class MainPanel(BoxLayout):
         self.uiLogic = uiLogic
         self.spacing = 30
         self.padding = [0, 10, 0, 0]
-        self.converterPanel = GridLayout(cols=5, size_hint=(1, .2))
+        self.converterPanel = BoxLayout(orientation='horizontal', size_hint=(1, .2))
         self.add_widget(self.converterPanel)
-        self.amountInput = TextInput(multiline=False, allow_copy=True)
+        self.amountInput = TextInput(multiline=False, allow_copy=True, font_name='Roboto', font_size=30)
         self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
         self.currencyToButton = self.uiLogic.DropDownCurrencyButton('USD')
-        print(self.currencyToButton)
         self.switchButton = Button(background_normal='Resources/switch_icon.png')
         self.switchButton.bind(on_press=self.Switch)
         self.convertButton = Button(background_normal='Resources/convert_icon.png')
@@ -49,9 +45,12 @@ class MainPanel(BoxLayout):
 
         self.resultPanel = BoxLayout(orientation='vertical', spacing=10, size_hint=(1, .8))
         self.add_widget(self.resultPanel)
-        self.mainLabel = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=32)
+        self.mainLabelPanel = BoxLayout(orientation='vertical')
+        mainLabelText = f"{self.converter.GetConvertedValue('EUR', 'USD', 1)} USD"
+        self.mainLabelUnit = Label(text='1 EUR =', font_name='Roboto-Bold', font_size=28)
+        self.mainLabel = Label(text=mainLabelText, font_name='Roboto-Bold', font_size=44)
         self.exchangeRateLabel1 = Label(text=self.converter.Get1DollarInEuros(), font_name='Roboto-Bold', font_size=20)
-        self.innerGridLayout = GridLayout(cols=3)
+        self.innerBoxLayout = BoxLayout(orientation='horizontal')
         self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=20,
                                         size_hint=(.4, 1))
         self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold', font_size=14,
@@ -62,7 +61,10 @@ class MainPanel(BoxLayout):
         currencyFrom = self.currencyFromButton.text[0:3]
         currencyTo = self.currencyToButton.text[0:3]
         amount = float(self.amountInput.text)
-        self.mainLabel.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, amount)
+        mainLabelUnitText = f"{amount} {currencyFrom} = "
+        mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
+        self.mainLabelUnit.text = mainLabelUnitText
+        self.mainLabel.text = mainLabelText
         #self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
         self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
@@ -101,12 +103,14 @@ class MainPanel(BoxLayout):
         converterButtonPanel.add_widget(self.convertButton)
 
     def InitiateResultPanel(self):
-        self.resultPanel.add_widget(self.mainLabel)
+        self.resultPanel.add_widget(self.mainLabelPanel)
+        self.mainLabelPanel.add_widget(self.mainLabelUnit)
+        self.mainLabelPanel.add_widget(self.mainLabel)
         self.resultPanel.add_widget(self.exchangeRateLabel1)
-        self.resultPanel.add_widget(self.innerGridLayout)
-        self.innerGridLayout.add_widget(Label(text='', size_hint=(.3, 1)))
-        self.innerGridLayout.add_widget(self.exchangeRateLabel2)
-        self.innerGridLayout.add_widget(self.dateOfUpdateLabel)
+        self.resultPanel.add_widget(self.innerBoxLayout)
+        self.innerBoxLayout.add_widget(Label(text='', size_hint=(.3, 1)))
+        self.innerBoxLayout.add_widget(self.exchangeRateLabel2)
+        self.innerBoxLayout.add_widget(self.dateOfUpdateLabel)
 
 
 class MainWindow(BoxLayout):
