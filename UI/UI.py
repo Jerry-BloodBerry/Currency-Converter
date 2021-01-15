@@ -40,7 +40,7 @@ class MainPanel(BoxLayout):
             btn = Button(text=btnText, size_hint_y=None, height=35)
             btn.bind(on_release=lambda btn: dropdownFrom.select(btn.text))
             dropdownFrom.add_widget(btn)
-        btnText = f"{'USD'}: {self.currencyDict['USD']}"
+        btnText = f"{'EUR'}: {self.currencyDict['EUR']}"
         self.currencyFromButton = Button(text=btnText)
         self.currencyFromButton.bind(on_release=dropdownFrom.open)
         dropdownFrom.bind(on_select=lambda instance, x: setattr(self.currencyFromButton, 'text', x))
