@@ -85,13 +85,12 @@ class MainPanel(BoxLayout):
         mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
         self.mainLabelUnit.text = mainLabelUnitText
         self.mainLabel.text = mainLabelText
-        #self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
+        self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
         self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
 
     def Switch(self, instance):
         tmp = self.currencyToButton.text
-        print(type(tmp))
         self.currencyToButton.text = self.currencyFromButton.text
         self.currencyFromButton.text = tmp
 
