@@ -1,16 +1,25 @@
+from datetime import datetime
+
 class Converter:
     def __init__(self, currencyDict, ApiResponse):
         self.currencyDict = currencyDict
         self.ApiResponse = ApiResponse
 
     def GetConvertedValue(self, currencyFrom, currencyTo, amount):
-        # TODO - should work with every currency (that function works only if currencyFrom is EUR)
-        value = amount * self.ApiResponse['rates'][currencyTo]
+        if currencyFrom == 'EUR':
+            value = amount * self.ApiResponse['rates'][currencyTo]
+        elif currencyTo == 'EUR':
+            value = amount * (1 / self.ApiResponse['rates'][currencyFrom])
+        else:
+            value = amount * self.ConvertBettwenCurrencies(currencyFrom, currencyTo)
+
         return "{:.5f}".format(value)
 
+    def ConvertBettwenCurrencies(self, currencyFrom, currencyTo):
+        return self.ApiResponse['rates'][currencyTo] / self.ApiResponse['rates'][currencyFrom]
+
     def GetUpdateDate(self):
-        # TODO - get date and time
-        return f"Last update: {self.ApiResponse['date']}"
+        return f"Last update: {self.ApiResponse['date']} {str(datetime.fromtimestamp(int(self.ApiResponse['timestamp']))).split()[1]}"
 
     def Get1EuroInDollars(self):
         value = self.GetConvertedValue('EUR', 'USD', 1)
