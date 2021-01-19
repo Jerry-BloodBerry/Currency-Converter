@@ -5,11 +5,9 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
-from UI.UILogic import UILogic
 import re
 Window.clearcolor = (0, 0.4, 0.6, 1)
 Window.size = (1000, 600)
-#Window.clearcolor = (1, 1, 1, 1)
 
 
 class Header(BoxLayout):
@@ -27,17 +25,38 @@ class Header(BoxLayout):
 
 
 class MainPanel(BoxLayout):
-    def __init__(self, uiLogic, converter, **kwargs):
+    def __init__(self, converter, currencyDict, **kwargs):
         super(MainPanel, self).__init__(**kwargs)
         self.converter = converter
-        self.uiLogic = uiLogic
+        self.currencyDict = currencyDict
         self.spacing = 30
         self.padding = [0, 10, 0, 0]
         self.converterPanel = BoxLayout(orientation='horizontal', size_hint=(1, .2))
         self.add_widget(self.converterPanel)
         self.amountInput = TextInput(multiline=False, allow_copy=True, font_name='Roboto', font_size=30)
-        self.currencyFromButton = self.uiLogic.DropDownCurrencyButton('EUR')
-        self.currencyToButton = self.uiLogic.DropDownCurrencyButton('USD')
+
+        dropdownFrom = DropDown()
+        for currencySymbol in self.currencyDict.keys():
+            btnText = f"{currencySymbol}: {self.currencyDict[currencySymbol]}"
+            btn = Button(text=btnText, size_hint_y=None, height=35)
+            btn.bind(on_release=lambda btn: dropdownFrom.select(btn.text))
+            dropdownFrom.add_widget(btn)
+        btnText = f"{'USD'}: {self.currencyDict['USD']}"
+        self.currencyFromButton = Button(text=btnText)
+        self.currencyFromButton.bind(on_release=dropdownFrom.open)
+        dropdownFrom.bind(on_select=lambda instance, x: setattr(self.currencyFromButton, 'text', x))
+
+        dropdownTo = DropDown()
+        for currencySymbol in self.currencyDict.keys():
+            btnText = f"{currencySymbol}: {self.currencyDict[currencySymbol]}"
+            btn = Button(text=btnText, size_hint_y=None, height=35)
+            btn.bind(on_release=lambda btn: dropdownTo.select(btn.text))
+            dropdownTo.add_widget(btn)
+        btnText = f"{'USD'}: {self.currencyDict['USD']}"
+        self.currencyToButton = Button(text=btnText)
+        self.currencyToButton.bind(on_release=dropdownTo.open)
+        dropdownTo.bind(on_select=lambda instance, x: setattr(self.currencyToButton, 'text', x))
+
         self.switchButton = Button(background_normal='Resources/switch_icon.png')
         self.switchButton.bind(on_press=self.Switch)
         self.convertButton = Button(background_normal='Resources/convert_icon.png')
@@ -129,8 +148,7 @@ class MainWindow(BoxLayout):
         self.padding = [50, 30, 30, 50]
         self.spacing = 30
         self.add_widget(Header(size_hint=(1, .05)))
-        uiLogic = UILogic(currencyDict)
-        self.mainPanel = MainPanel(uiLogic, converter, orientation='vertical', size_hint=(1, .95))
+        self.mainPanel = MainPanel(converter, currencyDict, orientation='vertical', size_hint=(1, .95))
         self.add_widget(self.mainPanel)
 
 
