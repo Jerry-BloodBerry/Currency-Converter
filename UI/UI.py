@@ -5,6 +5,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
+import re
 Window.clearcolor = (0, 0.4, 0.6, 1)
 Window.size = (1000, 600)
 
@@ -80,15 +81,22 @@ class MainPanel(BoxLayout):
     def Convert(self, instance):
         currencyFrom = self.currencyFromButton.text[0:3]
         currencyTo = self.currencyToButton.text[0:3]
-        amount = float(self.amountInput.text)
-        mainLabelUnitText = f"{amount} {currencyFrom} = "
-        mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
-        self.mainLabelUnit.text = mainLabelUnitText
-        self.mainLabel.text = mainLabelText
+        self.amountInput.text = (self.amountInput.text).replace(",",".")
+        match = re.fullmatch(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',self.amountInput.text)
+        if match is None:
+            self.mainLabel.text = "ZLY INPUT"
+            self.amountInput.text=""
+            self.mainLabelUnit.text=""
+        else:
+            amount = float(self.amountInput.text)
+            mainLabelUnitText = f"{amount} {currencyFrom} = "
+            mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
+            self.mainLabelUnit.text = mainLabelUnitText
+            self.mainLabel.text = mainLabelText
+        
         #self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
         self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
-
     def Switch(self, instance):
         tmp = self.currencyToButton.text
         print(type(tmp))
