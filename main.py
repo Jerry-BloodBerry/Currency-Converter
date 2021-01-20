@@ -1,34 +1,19 @@
 from kivy.app import App
+# from API.currency_api import get_available_currencies, get_latest_rates
 from Logic.Converter import Converter
 from UI.UI import MainWindow
-
-exampleCurrencies = {
-        "AED": "United Arab Emirates Dirham",
-        "AFN": "Afghan Afghani",
-        "ALL": "Albanian Lek",
-        "EUR": "Euro",
-        "AMD": "Armenian Dram",
-        "USD": "US Dollar"
-}
-exampleApiResponse = {
-    "success": True,
-    "timestamp": 1519296206,
-    "base": "EUR",
-    "date": "2021-01-11",
-    "rates": {
-        "AED": 1.566015,
-        "AFN": 1.560132,
-        "ALL": 1.154727,
-        "AMD": 7.827874,
-        "USD": 4.323345
-    }
-}
 
 
 class ConverterApp(App):
     def build(self):
-        converter = Converter(exampleCurrencies, exampleApiResponse)
-        return MainWindow(exampleCurrencies, converter)
+        # currencyDict = get_available_currencies()
+        # print(currencyDict)
+        # ratesDict = get_latest_rates()
+        # print(ratesDict)
+        currencyDict = {'AED': 'United Arab Emirates Dirham', 'AFN': 'Afghan Afghani', 'ALL': 'Albanian Lek', 'AMD': 'Armenian Dram', 'ANG': 'Netherlands Antillean Guilder', 'AOA': 'Angolan Kwanza', 'ARS': 'Argentine Peso', 'AUD': 'Australian Dollar', 'AWG': 'Aruban Florin', 'AZN': 'Azerbaijani Manat', 'BAM': 'Bosnia-Herzegovina Convertible Mark', 'BBD': 'Barbadian Dollar', 'BDT': 'Bangladeshi Taka', 'BGN': 'Bulgarian Lev', 'BHD': 'Bahraini Dinar', 'BIF': 'Burundian Franc', 'BMD': 'Bermudan Dollar', 'BND': 'Brunei Dollar', 'BOB': 'Bolivian Boliviano', 'BRL': 'Brazilian Real', 'BSD': 'Bahamian Dollar', 'BTC': 'Bitcoin', 'BTN': 'Bhutanese Ngultrum', 'BWP': 'Botswanan Pula', 'BYN': 'New Belarusian Ruble', 'BYR': 'Belarusian Ruble', 'BZD': 'Belize Dollar', 'CAD': 'Canadian Dollar', 'CDF': 'Congolese Franc', 'CHF': 'Swiss Franc', 'CLF': 'Chilean Unit of Account (UF)', 'CLP': 'Chilean Peso', 'CNY': 'Chinese Yuan', 'COP': 'Colombian Peso', 'CRC': 'Costa Rican Colón', 'CUC': 'Cuban Convertible Peso', 'CUP': 'Cuban Peso', 'CVE': 'Cape Verdean Escudo', 'CZK': 'Czech Republic Koruna', 'DJF': 'Djiboutian Franc', 'DKK': 'Danish Krone', 'DOP': 'Dominican Peso', 'DZD': 'Algerian Dinar', 'EGP': 'Egyptian Pound', 'ERN': 'Eritrean Nakfa', 'ETB': 'Ethiopian Birr', 'EUR': 'Euro', 'FJD': 'Fijian Dollar', 'FKP': 'Falkland Islands Pound', 'GBP': 'British Pound Sterling', 'GEL': 'Georgian Lari', 'GGP': 'Guernsey Pound', 'GHS': 'Ghanaian Cedi', 'GIP': 'Gibraltar Pound', 'GMD': 'Gambian Dalasi', 'GNF': 'Guinean Franc', 'GTQ': 'Guatemalan Quetzal', 'GYD': 'Guyanaese Dollar', 'HKD': 'Hong Kong Dollar', 'HNL': 'Honduran Lempira', 'HRK': 'Croatian Kuna', 'HTG': 'Haitian Gourde', 'HUF': 'Hungarian Forint', 'IDR': 'Indonesian Rupiah', 'ILS': 'Israeli New Sheqel', 'IMP': 'Manx pound', 'INR': 'Indian Rupee', 'IQD': 'Iraqi Dinar', 'IRR': 'Iranian Rial', 'ISK': 'Icelandic Króna', 'JEP': 'Jersey Pound', 'JMD': 'Jamaican Dollar', 'JOD': 'Jordanian Dinar', 'JPY': 'Japanese Yen', 'KES': 'Kenyan Shilling', 'KGS': 'Kyrgystani Som', 'KHR': 'Cambodian Riel', 'KMF': 'Comorian Franc', 'KPW': 'North Korean Won', 'KRW': 'South Korean Won', 'KWD': 'Kuwaiti Dinar', 'KYD': 'Cayman Islands Dollar', 'KZT': 'Kazakhstani Tenge', 'LAK': 'Laotian Kip', 'LBP': 'Lebanese Pound', 'LKR': 'Sri Lankan Rupee', 'LRD': 'Liberian Dollar', 'LSL': 'Lesotho Loti', 'LTL': 'Lithuanian Litas', 'LVL': 'Latvian Lats', 'LYD': 'Libyan Dinar', 'MAD': 'Moroccan Dirham', 'MDL': 'Moldovan Leu', 'MGA': 'Malagasy Ariary', 'MKD': 'Macedonian Denar', 'MMK': 'Myanma Kyat', 'MNT': 'Mongolian Tugrik', 'MOP': 'Macanese Pataca', 'MRO': 'Mauritanian Ouguiya', 'MUR': 'Mauritian Rupee', 'MVR': 'Maldivian Rufiyaa', 'MWK': 'Malawian Kwacha', 'MXN': 'Mexican Peso', 'MYR': 'Malaysian Ringgit', 'MZN': 'Mozambican Metical', 'NAD': 'Namibian Dollar', 'NGN': 'Nigerian Naira', 'NIO': 'Nicaraguan Córdoba', 'NOK': 'Norwegian Krone', 'NPR': 'Nepalese Rupee', 'NZD': 'New Zealand Dollar', 'OMR': 'Omani Rial', 'PAB': 'Panamanian Balboa', 'PEN': 'Peruvian Nuevo Sol', 'PGK': 'Papua New Guinean Kina', 'PHP': 'Philippine Peso', 'PKR': 'Pakistani Rupee', 'PLN': 'Polish Zloty', 'PYG': 'Paraguayan Guarani', 'QAR': 'Qatari Rial', 'RON': 'Romanian Leu', 'RSD': 'Serbian Dinar', 'RUB': 'Russian Ruble', 'RWF': 'Rwandan Franc', 'SAR': 'Saudi Riyal', 'SBD': 'Solomon Islands Dollar', 'SCR': 'Seychellois Rupee', 'SDG': 'Sudanese Pound', 'SEK': 'Swedish Krona', 'SGD': 'Singapore Dollar', 'SHP': 'Saint Helena Pound', 'SLL': 'Sierra Leonean Leone', 'SOS': 'Somali Shilling', 'SRD': 'Surinamese Dollar', 'STD': 'São Tomé and Príncipe Dobra', 'SVC': 'Salvadoran Colón', 'SYP': 'Syrian Pound', 'SZL': 'Swazi Lilangeni', 'THB': 'Thai Baht', 'TJS': 'Tajikistani Somoni', 'TMT': 'Turkmenistani Manat', 'TND': 'Tunisian Dinar', 'TOP': 'Tongan Paʻanga', 'TRY': 'Turkish Lira', 'TTD': 'Trinidad and Tobago Dollar', 'TWD': 'New Taiwan Dollar', 'TZS': 'Tanzanian Shilling', 'UAH': 'Ukrainian Hryvnia', 'UGX': 'Ugandan Shilling', 'USD': 'United States Dollar', 'UYU': 'Uruguayan Peso', 'UZS': 'Uzbekistan Som', 'VEF': 'Venezuelan Bolívar Fuerte', 'VND': 'Vietnamese Dong', 'VUV': 'Vanuatu Vatu', 'WST': 'Samoan Tala', 'XAF': 'CFA Franc BEAC', 'XAG': 'Silver (troy ounce)', 'XAU': 'Gold (troy ounce)', 'XCD': 'East Caribbean Dollar', 'XDR': 'Special Drawing Rights', 'XOF': 'CFA Franc BCEAO', 'XPF': 'CFP Franc', 'YER': 'Yemeni Rial', 'ZAR': 'South African Rand', 'ZMK': 'Zambian Kwacha (pre-2013)', 'ZMW': 'Zambian Kwacha', 'ZWL': 'Zimbabwean Dollar'}
+        ratesDict = {'success': True, 'timestamp': 1611145446, 'base': 'EUR', 'date': '2021-01-20', 'rates': {'AED': 4.446789, 'AFN': 94.735482, 'ALL': 123.152128, 'AMD': 628.562586, 'ANG': 2.173079, 'AOA': 794.654021, 'ARS': 104.277505, 'AUD': 1.567544, 'AWG': 2.17919, 'AZN': 2.049478, 'BAM': 1.954911, 'BBD': 2.444451, 'BDT': 102.668454, 'BGN': 1.951491, 'BHD': 0.456025, 'BIF': 2350.795305, 'BMD': 1.210661, 'BND': 1.605546, 'BOB': 8.335283, 'BRL': 6.467113, 'BSD': 1.210631, 'BTC': 3.5051098e-05, 'BTN': 88.367074, 'BWP': 13.223886, 'BYN': 3.075055, 'BYR': 23728.957197, 'BZD': 2.440253, 'CAD': 1.539107, 'CDF': 2385.002309, 'CHF': 1.077476, 'CLF': 0.032376, 'CLP': 893.22479, 'CNY': 7.829469, 'COP': 4227.216872, 'CRC': 737.083627, 'CUC': 1.210661, 'CUP': 32.082519, 'CVE': 110.213208, 'CZK': 26.153955, 'DJF': 215.528718, 'DKK': 7.437975, 'DOP': 70.277975, 'DZD': 160.96098, 'EGP': 19.034375, 'ERN': 18.15987, 'ETB': 47.750761, 'EUR': 1, 'FJD': 2.46575, 'FKP': 0.885315, 'GBP': 0.885338, 'GEL': 4.00269, 'GGP': 0.885315, 'GHS': 7.058083, 'GIP': 0.885315, 'GMD': 62.594063, 'GNF': 12425.46098, 'GTQ': 9.42787, 'GYD': 253.280977, 'HKD': 9.3845, 'HNL': 29.185285, 'HRK': 7.562879, 'HTG': 86.959136, 'HUF': 357.483684, 'IDR': 17014.994037, 'ILS': 3.939697, 'IMP': 0.885315, 'INR': 88.352533, 'IQD': 1767.539391, 'IRR': 50974.884465, 'ISK': 157.204697, 'JEP': 0.885315, 'JMD': 175.222659, 'JOD': 0.858358, 'JPY': 125.685969, 'KES': 133.412606, 'KGS': 102.661045, 'KHR': 4909.193053, 'KMF': 491.467887, 'KPW': 1089.651276, 'KRW': 1334.584657, 'KWD': 0.366661, 'KYD': 1.008826, 'KZT': 507.241635, 'LAK': 11277.100621, 'LBP': 1830.439833, 'LKR': 236.680378, 'LRD': 204.602013, 'LSL': 18.438748, 'LTL': 3.574767, 'LVL': 0.732317, 'LYD': 5.403361, 'MAD': 10.856698, 'MDL': 21.095387, 'MGA': 4594.990704, 'MKD': 61.556075, 'MMK': 1613.784744, 'MNT': 3458.685542, 'MOP': 9.666058, 'MRO': 432.205798, 'MUR': 47.762821, 'MVR': 18.680267, 'MWK': 933.652255, 'MXN': 23.791972, 'MYR': 4.897101, 'MZN': 90.922777, 'NAD': 18.390237, 'NGN': 477.905421, 'NIO': 42.251145, 'NOK': 10.333743, 'NPR': 141.387559, 'NZD': 1.698007, 'OMR': 0.465491, 'PAB': 1.210631, 'PEN': 4.375944, 'PGK': 4.305277, 'PHP': 58.141985, 'PKR': 194.489505, 'PLN': 4.533439, 'PYG': 8359.071873, 'QAR': 4.407715, 'RON': 4.874113, 'RSD': 117.925516, 'RUB': 89.16216, 'RWF': 1200.795717, 'SAR': 4.541241, 'SBD': 9.649152, 'SCR': 25.671871, 'SDG': 66.97988, 'SEK': 10.14946, 'SGD': 1.606172, 'SHP': 0.885315, 'SLL': 12336.636106, 'SOS': 707.629115, 'SRD': 17.135729, 'STD': 25223.958195, 'SVC': 10.593022, 'SYP': 620.865117, 'SZL': 18.059713, 'THB': 36.296829, 'TJS': 13.795217, 'TMT': 4.24942, 'TND': 3.273633, 'TOP': 2.775258, 'TRY': 9.012627, 'TTD': 8.212141, 'TWD': 33.879747, 'TZS': 2807.502432, 'UAH': 34.206625, 'UGX': 4473.297891, 'USD': 1.210661, 'UYU': 51.252915, 'UZS': 12712.715992, 'VEF': 12.091476, 'VND': 27932.873676, 'VUV': 131.79191, 'WST': 3.051651, 'XAF': 655.648895, 'XAG': 0.04783, 'XAU': 0.000655, 'XCD': 3.271872, 'XDR': 0.840805, 'XOF': 655.648895, 'XPF': 119.764665, 'YER': 303.089294, 'ZAR': 18.108336, 'ZMK': 10897.399642, 'ZMW': 25.841157, 'ZWL': 389.833093}}
+        converter = Converter(currencyDict, ratesDict)
+        return MainWindow(currencyDict, converter)
 
 
 ConverterApp().run()
