@@ -35,27 +35,27 @@ class MainPanel(BoxLayout):
         self.add_widget(self.converterPanel)
         self.amountInput = TextInput(multiline=False, allow_copy=True, font_name='Roboto', font_size=30)
 
-        dropdownFrom = DropDown()
+        self.dropdownFrom = DropDown()
         for currencySymbol in self.currencyDict.keys():
             btnText = f"{currencySymbol}: {self.currencyDict[currencySymbol]}"
             btn = Button(text=btnText, size_hint_y=None, height=35)
-            btn.bind(on_release=lambda btn: dropdownFrom.select(btn.text))
-            dropdownFrom.add_widget(btn)
+            btn.bind(on_release=lambda btn: self.dropdownFrom.select(btn.text))
+            self.dropdownFrom.add_widget(btn)
         btnText = f"{'EUR'}: {self.currencyDict['EUR']}"
         self.currencyFromButton = Button(text=btnText)
-        self.currencyFromButton.bind(on_release=dropdownFrom.open)
-        dropdownFrom.bind(on_select=lambda instance, x: setattr(self.currencyFromButton, 'text', x))
+        self.currencyFromButton.bind(on_release=self.dropdownFrom.open)
+        self.dropdownFrom.bind(on_select=lambda instance, x: setattr(self.currencyFromButton, 'text', x))
 
-        dropdownTo = DropDown()
+        self.dropdownTo = DropDown()
         for currencySymbol in self.currencyDict.keys():
             btnText = f"{currencySymbol}: {self.currencyDict[currencySymbol]}"
             btn = Button(text=btnText, size_hint_y=None, height=35)
-            btn.bind(on_release=lambda btn: dropdownTo.select(btn.text))
-            dropdownTo.add_widget(btn)
+            btn.bind(on_release=lambda btn: self.dropdownTo.select(btn.text))
+            self.dropdownTo.add_widget(btn)
         btnText = f"{'USD'}: {self.currencyDict['USD']}"
         self.currencyToButton = Button(text=btnText)
-        self.currencyToButton.bind(on_release=dropdownTo.open)
-        dropdownTo.bind(on_select=lambda instance, x: setattr(self.currencyToButton, 'text', x))
+        self.currencyToButton.bind(on_release=self.dropdownTo.open)
+        self.dropdownTo.bind(on_select=lambda instance, x: setattr(self.currencyToButton, 'text', x))
 
         self.switchButton = Button(background_normal='Resources/switch_icon.png')
         self.switchButton.bind(on_press=self.Switch)
