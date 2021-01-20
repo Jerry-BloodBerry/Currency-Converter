@@ -17,3 +17,4 @@ The following modules need to be installed before running the project locally:
 + json
 + os
 + dotenv
++ urllib3
