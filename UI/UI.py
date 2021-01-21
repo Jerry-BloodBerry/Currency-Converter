@@ -5,9 +5,11 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
+from kivy.uix.popup import Popup
 import re
 Window.clearcolor = (0, 0.4, 0.6, 1)
 Window.size = (1000, 600)
+
 
 
 class Header(BoxLayout):
@@ -84,9 +86,11 @@ class MainPanel(BoxLayout):
         self.amountInput.text = (self.amountInput.text).replace(",",".")
         match = re.fullmatch(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',self.amountInput.text)
         if match is None:
-            self.mainLabel.text = "ZLY INPUT"
             self.amountInput.text=""
-            self.mainLabelUnit.text=""
+            content = Button(text='CHANGING THAT RIGHT NOW, SIR!')
+            popup = Popup(content=content,title= "WRONG INPUT EXCEPTION", auto_dismiss=False)
+            content.bind(on_press=popup.dismiss)
+            popup.open()       
         else:
             amount = float(self.amountInput.text)
             mainLabelUnitText = f"{amount} {currencyFrom} = "
