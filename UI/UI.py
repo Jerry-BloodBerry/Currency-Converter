@@ -88,11 +88,8 @@ class MainPanel(BoxLayout):
                              self.amountInput.text)
         if match is None:
             self.amountInput.text = ""
-            content = Button(text='CHANGING THAT RIGHT NOW, SIR!')
-            popup = Popup(content=content, title="WRONG INPUT EXCEPTION", title_align="center", auto_dismiss=False,
-                          size_hint=(0.3, 0.3))
-            content.bind(on_press=popup.dismiss)
-            popup.open()
+            self.amountInput.hint_text = "Enter a valid amount"
+            self.amountInput.hint_text_color = [.71, 0, 0, 1]
         else:
             amount = float(self.amountInput.text)
             mainLabelUnitText = f"{amount} {currencyFrom} = "
