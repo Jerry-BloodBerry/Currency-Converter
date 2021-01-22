@@ -91,6 +91,7 @@ class MainPanel(BoxLayout):
             self.amountInput.hint_text = "Enter a valid amount"
             self.amountInput.hint_text_color = [.71, 0, 0, 1]
         else:
+            self.amountInput.hint_text = ""
             amount = float(self.amountInput.text)
             mainLabelUnitText = f"{amount} {currencyFrom} = "
             mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"

@@ -132,6 +132,10 @@ class ConverterApp(App):
         #                        'XCD': 3.271872, 'XDR': 0.840805, 'XOF': 655.648895, 'XPF': 119.764665,
         #                        'YER': 303.089294, 'ZAR': 18.108336, 'ZMK': 10897.399642, 'ZMW': 25.841157,
         #                        'ZWL': 389.833093}}
+        if not currencyDict['success']:
+            ratesDict = currencyDict
+        elif not ratesDict['success']:
+            currencyDict = ratesDict
         converter = Converter(ratesDict)
         return MainWindow(currencyDict, converter)
 

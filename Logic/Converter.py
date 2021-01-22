@@ -26,7 +26,7 @@ class Converter:
         return f"1 EUR = {value} USD"
 
     def Get1DollarInEuros(self):
-        value = self.GetConvertedValue('EUR', 'USD', 1)
+        value = self.GetConvertedValue('USD', 'EUR', 1)
         return f"1 USD = {value} EUR"
 
     def GetConvertedValueString(self, currencyFrom, currencyTo, amount):
