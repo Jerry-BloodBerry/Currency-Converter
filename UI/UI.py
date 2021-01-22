@@ -1,11 +1,13 @@
-from kivy.app import App
+import re
+
+from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-from kivy.core.window import Window
-import re
+
 Window.clearcolor = (0, 0.4, 0.6, 1)
 Window.size = (1200, 600)
 
@@ -81,22 +83,25 @@ class MainPanel(BoxLayout):
     def Convert(self, instance):
         currencyFrom = self.currencyFromButton.text[0:3]
         currencyTo = self.currencyToButton.text[0:3]
-        self.amountInput.text = (self.amountInput.text).replace(",",".")
-        match = re.fullmatch(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',self.amountInput.text)
+        self.amountInput.text = (self.amountInput.text).replace(",", ".")
+        match = re.fullmatch(r'^[1-9]+[0-9]*\.?[0-9]*|[0]*[1-9]+\.?[0-9]*|[0]+\.[0-9]*[1-9]+[0-9]*$',
+                             self.amountInput.text)
         if match is None:
-            self.mainLabel.text = "ZLY INPUT"
-            self.amountInput.text=""
-            self.mainLabelUnit.text=""
+            self.amountInput.text = ""
+            self.amountInput.hint_text = "Enter a valid amount"
+            self.amountInput.hint_text_color = [.71, 0, 0, 1]
         else:
+            self.amountInput.hint_text = ""
             amount = float(self.amountInput.text)
             mainLabelUnitText = f"{amount} {currencyFrom} = "
             mainLabelText = f"{self.converter.GetConvertedValue(currencyFrom, currencyTo, amount)} {currencyTo}"
             self.mainLabelUnit.text = mainLabelUnitText
             self.mainLabel.text = mainLabelText
-        
+
         self.exchangeRateLabel1.text = self.converter.GetConvertedValueString(currencyTo, currencyFrom, 1)
         self.exchangeRateLabel2.text = self.converter.GetConvertedValueString(currencyFrom, currencyTo, 1)
         self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
+
     def Switch(self, instance):
         tmp = self.currencyToButton.text
         self.currencyToButton.text = self.currencyFromButton.text
@@ -124,7 +129,7 @@ class MainPanel(BoxLayout):
         currencyToPanel.add_widget(Label(text='To', font_name='Roboto-Bold', font_size=18, size_hint=(1, .25)))
         currencyToPanel.add_widget(self.currencyToButton)
 
-        converterButtonPanel = BoxLayout(orientation="vertical", size_hint=(.08, 1), padding=[10,0])
+        converterButtonPanel = BoxLayout(orientation="vertical", size_hint=(.08, 1), padding=[10, 0])
         self.converterPanel.add_widget(converterButtonPanel)
         converterButtonPanel.add_widget(Label(size_hint=(1, .5)))
         converterButtonPanel.add_widget(self.convertButton)
@@ -143,11 +148,16 @@ class MainPanel(BoxLayout):
 class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
-        self.orientation = 'vertical'
-        self.padding = [60, 30, 45, 50]
-        self.spacing = 30
-        self.add_widget(Header(size_hint=(1, .05)))
-        self.mainPanel = MainPanel(converter, currencyDict, orientation='vertical', size_hint=(1, .95))
-        self.add_widget(self.mainPanel)
-
-
+        if not currencyDict['success']:
+            btn = Button(text='Close App')
+            popup = Popup(content=btn, title=currencyDict['error']['info'], title_align="center", auto_dismiss=False,
+                          size_hint=(0.4, 0.2))
+            btn.bind(on_press=quit)
+            popup.open()
+        else:
+            self.orientation = 'vertical'
+            self.padding = [60, 30, 45, 50]
+            self.spacing = 30
+            self.add_widget(Header(size_hint=(1, .05)))
+            self.mainPanel = MainPanel(converter, currencyDict['symbols'], orientation='vertical', size_hint=(1, .95))
+            self.add_widget(self.mainPanel)
