@@ -2,8 +2,7 @@ from datetime import datetime
 
 
 class Converter:
-    def __init__(self, currencyDict, ApiResponse):
-        self.currencyDict = currencyDict
+    def __init__(self, ApiResponse):
         self.ApiResponse = ApiResponse
 
     def GetConvertedValue(self, currencyFrom, currencyTo, amount):

@@ -1,4 +1,5 @@
 import re
+
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -149,9 +150,16 @@ class MainPanel(BoxLayout):
 class MainWindow(BoxLayout):
     def __init__(self, currencyDict, converter, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
-        self.orientation = 'vertical'
-        self.padding = [60, 30, 45, 50]
-        self.spacing = 30
-        self.add_widget(Header(size_hint=(1, .05)))
-        self.mainPanel = MainPanel(converter, currencyDict, orientation='vertical', size_hint=(1, .95))
-        self.add_widget(self.mainPanel)
+        if not currencyDict['success']:
+            btn = Button(text='Close App')
+            popup = Popup(content=btn, title=currencyDict['error']['info'], title_align="center", auto_dismiss=False,
+                          size_hint=(0.4, 0.2))
+            btn.bind(on_press=quit)
+            popup.open()
+        else:
+            self.orientation = 'vertical'
+            self.padding = [60, 30, 45, 50]
+            self.spacing = 30
+            self.add_widget(Header(size_hint=(1, .05)))
+            self.mainPanel = MainPanel(converter, currencyDict['symbols'], orientation='vertical', size_hint=(1, .95))
+            self.add_widget(self.mainPanel)
