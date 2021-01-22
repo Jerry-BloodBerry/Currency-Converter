@@ -40,6 +40,9 @@ def get_available_currencies():
         
 
 def get_latest_rates():
+    if internet_on() is False:
+        print("Brak polaczenia z internetem")
+        os.sys.exit()
     try:
         """Returns latest currency rates with base EUR and update timestamp"""
         global API_KEY

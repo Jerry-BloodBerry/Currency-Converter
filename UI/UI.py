@@ -7,10 +7,9 @@ from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.uix.popup import Popup
 import re
+
 Window.clearcolor = (0, 0.4, 0.6, 1)
-Window.size = (1200, 600)
-
-
+Window.size = (1200, 600)   
 
 class Header(BoxLayout):
     def __init__(self, **kwargs):
