@@ -7,6 +7,7 @@ from UI.UI import MainWindow
 
 class ConverterApp(App):
     def build(self):
+        self.title = 'Quite Accurate Currency Converter'
         currencyDict = get_available_currencies()
         ratesDict = get_latest_rates()
         # currencyDict = {'success': True, 'symbols': {'AED': 'United Arab Emirates Dirham', 'AFN': 'Afghan Afghani',

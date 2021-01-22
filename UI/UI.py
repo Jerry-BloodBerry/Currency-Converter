@@ -8,6 +8,9 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
+from API.currency_api import *
+from Logic.Converter import Converter
+
 Window.clearcolor = (0, 0.4, 0.6, 1)
 Window.size = (1200, 600)
 
@@ -76,8 +79,10 @@ class MainPanel(BoxLayout):
         self.innerBoxLayout = BoxLayout(orientation='horizontal', size_hint=(1, .4))
         self.exchangeRateLabel2 = Label(text=self.converter.Get1EuroInDollars(), font_name='Roboto-Bold', font_size=26,
                                         size_hint=(.4, 1))
-        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold', font_size=14,
-                                       size_hint=(.3, 1))
+        self.dateOfUpdateLabel = Label(text=self.converter.GetUpdateDate(), font_name='Roboto-Bold', font_size=14)
+        self.updateRatesButton = Button(text='Update rates')
+        self.updateRatesButton.bind(on_release=self.UpdateRates)
+        self.updateBoxLayout = BoxLayout(orientation='vertical', size_hint=(.3, 1))
         self.InitiateResultPanel()
 
     def Convert(self, instance):
@@ -106,6 +111,24 @@ class MainPanel(BoxLayout):
         tmp = self.currencyToButton.text
         self.currencyToButton.text = self.currencyFromButton.text
         self.currencyFromButton.text = tmp
+
+    def UpdateRates(self, instance):
+        updatedRatesDict = get_latest_rates()
+        if updatedRatesDict['success']:
+            self.converter = Converter(updatedRatesDict)
+            self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
+            self.mainLabelUnit.text = '1 EUR ='
+            mainLabelText = f"{self.converter.GetConvertedValue('EUR', 'USD', 1)} USD"
+            self.mainLabel.text = mainLabelText
+            self.exchangeRateLabel1.text = self.converter.Get1DollarInEuros()
+            self.exchangeRateLabel2.text = self.converter.Get1EuroInDollars()
+            self.dateOfUpdateLabel.text = self.converter.GetUpdateDate()
+        else:
+            btn = Button(text='Close')
+            popup = Popup(content=btn, title='Cannot update rates. Check your internet connection and try again later.',
+                          title_align="center", auto_dismiss=False, size_hint=(0.4, 0.2))
+            btn.bind(on_press=popup.dismiss)
+            popup.open()
 
     def InitiateConverterPanel(self):
         self.converterPanel.spacing = 5
@@ -142,7 +165,9 @@ class MainPanel(BoxLayout):
         self.resultPanel.add_widget(self.innerBoxLayout)
         self.innerBoxLayout.add_widget(Label(text='', size_hint=(.3, 1)))
         self.innerBoxLayout.add_widget(self.exchangeRateLabel2)
-        self.innerBoxLayout.add_widget(self.dateOfUpdateLabel)
+        self.innerBoxLayout.add_widget(self.updateBoxLayout)
+        self.updateBoxLayout.add_widget(self.dateOfUpdateLabel)
+        self.updateBoxLayout.add_widget(self.updateRatesButton)
 
 
 class MainWindow(BoxLayout):
