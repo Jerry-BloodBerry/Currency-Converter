@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Converter:
     def __init__(self, currencyDict, ApiResponse):
         self.currencyDict = currencyDict
@@ -11,11 +12,11 @@ class Converter:
         elif currencyTo == 'EUR':
             value = amount * (1 / self.ApiResponse['rates'][currencyFrom])
         else:
-            value = amount * self.ConvertBettwenCurrencies(currencyFrom, currencyTo)
+            value = amount * self.ConvertBetweenCurrencies(currencyFrom, currencyTo)
 
         return "{:.5f}".format(value)
 
-    def ConvertBettwenCurrencies(self, currencyFrom, currencyTo):
+    def ConvertBetweenCurrencies(self, currencyFrom, currencyTo):
         return self.ApiResponse['rates'][currencyTo] / self.ApiResponse['rates'][currencyFrom]
 
     def GetUpdateDate(self):

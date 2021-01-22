@@ -1,4 +1,5 @@
 from kivy.app import App
+
 # from API.currency_api import get_available_currencies, get_latest_rates
 from Logic.Converter import Converter
 from UI.UI import MainWindow
