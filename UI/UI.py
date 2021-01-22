@@ -87,7 +87,7 @@ class MainPanel(BoxLayout):
         if match is None:
             self.amountInput.text=""
             content = Button(text='CHANGING THAT RIGHT NOW, SIR!')
-            popup = Popup(content=content,title= "WRONG INPUT EXCEPTION", auto_dismiss=False)
+            popup = Popup(content=content,title= "WRONG INPUT EXCEPTION", title_align="center",auto_dismiss=False,size_hint=(0.3,0.3))
             content.bind(on_press=popup.dismiss)
             popup.open()       
         else:
